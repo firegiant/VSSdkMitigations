@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+  Copyright (c) FireGiant.  All Rights Reserved.  Licensed under the BSD License.  See LICENSE.txt in the project root for license information.
+-->
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>FireGiant.BuildTasks.VSSdkMitigations</id>
+    <version>1.0.0.0</version>
+    <title>FireGiant VS SDK Mitigation MSBuild Tasks</title>
+    <authors>FireGiant</authors>
+    <owners>FireGiant</owners>
+    <licenseUrl>https://raw.github.com/firegiant/VSSdkMitigations/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/firegiant/VSSdkMitigations</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>MSBuild Tasks to mitigate issues in the VS SDK.</description>
+    <releaseNotes>Initial release of FireGiant.BuildTasks.VSSdkMitigations.</releaseNotes>
+    <copyright>Copyright (c) 2015, FireGiant</copyright>
+    <tags>vssdk workaround</tags>
+  </metadata>
+
+  <files>
+    <file src="bin\$configuration$\**\*.dll" target="tools\" />
+    <file src="bin\$configuration$\*.props" target="build\" />
+  </files>
+</package>

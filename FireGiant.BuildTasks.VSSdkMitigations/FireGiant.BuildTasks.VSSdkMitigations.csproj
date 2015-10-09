@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (c) FireGiant.  All Rights Reserved.  Licensed under the BSD License.  See LICENSE.txt in the project root for license information.
+-->
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{76282C92-7FD2-425C-9DA7-863A51B60B15}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FireGiant.BuildTasks.VSSdkMitigations</RootNamespace>
+    <AssemblyName>FireGiant.BuildTasks.VSSdkMitigations</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="FilteredBuildEngine.cs" />
+    <Compile Include="FilteredGetVSTemplateItems.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FireGiant.BuildTasks.VSSdkMitigations.nuspec" />
+    <Content Include="FireGiant.BuildTasks.VSSdkMitigations.props">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VsSDK.Build.Tasks">
+      <HintPath>C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.Build.Tasks.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!--
+    Build the Nuget package after the build.
+  -->
+  <Target Name="AfterBuild" DependsOnTargets="_GatherAfterBuildInputsOutputs" Inputs="@(AfterBuildInput)" Outputs="@(AfterBuildOutput)">
+    <MakeDir Directories="$(OutputPath)package" />
+    <Exec Command="nuget.exe pack FireGiant.BuildTasks.VSSdkMitigations.nuspec -Properties Configuration=$(Configuration) -NoPackageAnalysis -OutputDirectory $(OutputPath)package" />
+    <ItemGroup>
+      <NugetPackage Include="$(OutputPath)package\FireGiant.BuildTasks.VSSdkMitigations.*.nupkg" />
+    </ItemGroup>
+  </Target>
+  <Target Name="AfterClean">
+    <RemoveDir Directories="$(OutputPath)package" />
+  </Target>
+  <Target Name="_GatherAfterBuildInputsOutputs">
+    <ItemGroup>
+      <AfterBuildInput Include="FireGiant.BuildTasks.VSSdkMitigations.nuspec" />
+      <AfterBuildInput Include="$(OutputPath)*.dll" />
+      <AfterBuildInput Include="$(OutputPath)*.targets" />
+      <AfterBuildOutput Include="$(OutputPath)package" />
+      <AfterBuildOutput Include="$(OutputPath)package\FireGiant.BuildTasks.VSSdkMitigations.*.nupkg" />
+    </ItemGroup>
+  </Target>
+  <!--
+    Publish package targets.
+  -->
+  <Target Name="PublishPackage" DependsOnTargets="_OnlyPublishReleaseBuild;Build">
+    <Exec Command="nuget.exe push @(NugetPackage) $(PublishApiKey)" />
+  </Target>
+  <Target Name="_OnlyPublishReleaseBuild" Condition=" '$(Configuration)'!='Release' ">
+    <Error Text="Only publish the release build." />
+  </Target>
+</Project>

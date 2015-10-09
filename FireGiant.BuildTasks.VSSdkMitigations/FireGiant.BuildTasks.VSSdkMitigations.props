@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright (c) FireGiant.  All Rights Reserved.  Licensed under the BSD License.  See LICENSE.txt in the project root for license information.
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask TaskName="FilteredGetVSTemplateItems" AssemblyFile="..\tools\FireGiant.BuildTasks.VSSdkMitigations.dll" />
+</Project>
