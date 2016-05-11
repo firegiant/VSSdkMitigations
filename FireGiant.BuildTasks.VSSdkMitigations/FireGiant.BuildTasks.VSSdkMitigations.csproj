@@ -54,7 +54,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VsSDK.Build.Tasks">
       <HintPath>C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.Build.Tasks.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
