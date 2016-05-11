@@ -5,7 +5,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>FireGiant.BuildTasks.VSSdkMitigations</id>
-    <version>1.0.0.0</version>
+    <version>1.0.1.0</version>
     <title>FireGiant VS SDK Mitigation MSBuild Tasks</title>
     <authors>FireGiant</authors>
     <owners>FireGiant</owners>
